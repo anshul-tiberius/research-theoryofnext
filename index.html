@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory of Next — Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F5F0E8;
+      --cream-dark: #EDE7D8;
+      --red: #D42B2B;
+      --red-dark: #B02020;
+      --amber: #E8A020;
+      --ink: #1C1C1C;
+      --ink-mid: #555;
+      --ink-light: #999;
+      --grid: rgba(0,0,0,0.055);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Mono', monospace;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 60px;
+      background: var(--cream);
+      border-bottom: 1.5px solid var(--ink);
+      transition: box-shadow 0.3s;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 26px; height: 26px; background: var(--red); display: flex; align-items: center; justify-content: center; }
+    .logo-mark span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 12px; color: white; }
+    .logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+    .logo-text em { color: var(--red); font-style: normal; }
+    .nav-contact {
+      font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: white; background: var(--ink);
+      padding: 9px 18px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-contact:hover { background: var(--red); }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 100px 48px 80px;
+      overflow: hidden;
+    }
+    .hero-accent {
+      position: absolute; top: 0; right: 0;
+      width: 38%; height: 100%;
+      background: var(--ink);
+      clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+      width: 100%; max-width: 1100px;
+    }
+    .eyebrow {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--red);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 28px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .eyebrow::before { content: ''; width: 20px; height: 1.5px; background: var(--red); display: block; }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 6vw, 84px); font-weight: 900;
+      line-height: 0.95; letter-spacing: -0.02em; color: var(--ink);
+      margin-bottom: 28px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    h1 em { font-style: italic; color: var(--red); }
+    .hero-desc {
+      font-family: 'DM Mono', monospace; font-size: 13px;
+      line-height: 1.9; color: var(--ink-mid); max-width: 420px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .btn-red {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: white; background: var(--red);
+      padding: 15px 26px; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-red:hover { background: var(--red-dark); transform: translateY(-2px); }
+
+    /* STUDY CARD */
+    .study-card {
+      background: var(--cream); padding: 36px 32px;
+      position: relative; border: 1.5px solid rgba(0,0,0,0.1);
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .study-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 3px; background: var(--amber);
+    }
+    .card-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      background: var(--red); color: white; padding: 5px 10px;
+      margin-bottom: 20px;
+    }
+    .tag-dot { width: 5px; height: 5px; border-radius: 50%; background: white; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 700; color: var(--ink); line-height: 1.25; margin-bottom: 14px; }
+    .card-desc { font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.85; color: var(--ink-mid); margin-bottom: 24px; }
+    .card-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.09); }
+    .meta-key { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 3px; }
+    .meta-val { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--ink); }
+
+    /* TICKER */
+    .ticker { position: relative; z-index: 1; background: var(--red); height: 38px; display: flex; align-items: center; overflow: hidden; }
+    .ticker-track { display: flex; white-space: nowrap; animation: ticker 24s linear infinite; }
+    .ticker-item { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); padding: 0 36px; }
+    .sep { color: rgba(255,255,255,0.3); }
+    @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ABOUT */
+    .about {
+      position: relative; z-index: 1; background: var(--ink);
+      padding: 80px 48px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .about-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 18px; }
+    .about-title { font-family: 'Playfair Display', serif; font-size: clamp(26px, 3vw, 40px); font-weight: 700; color: white; line-height: 1.2; margin-bottom: 20px; }
+    .about-title em { font-style: italic; color: var(--amber); }
+    .about-body { font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.9; color: rgba(255,255,255,0.5); }
+    .about-item { display: flex; gap: 18px; padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .about-item:first-child { padding-top: 0; }
+    .about-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .about-num { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 900; color: var(--red); flex-shrink: 0; width: 22px; line-height: 1.4; }
+    .about-item-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 4px; }
+    .about-item-body { font-family: 'DM Mono', monospace; font-size: 11px; line-height: 1.7; color: rgba(255,255,255,0.38); }
+
+    /* PARTICIPATE */
+    .participate {
+      position: relative; z-index: 1;
+      padding: 80px 48px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .section-eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .section-eyebrow::before { content: ''; width: 18px; height: 1.5px; background: var(--red); display: block; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(28px, 3vw, 42px); font-weight: 900; color: var(--ink); line-height: 1.1; margin-bottom: 18px; }
+    .section-title em { font-style: italic; color: var(--red); }
+    .section-body { font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.9; color: var(--ink-mid); margin-bottom: 32px; }
+    .promise-list { list-style: none; }
+    .promise-item { display: flex; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-family: 'DM Mono', monospace; font-size: 12px; line-height: 1.75; color: var(--ink-mid); }
+    .promise-item:first-child { padding-top: 0; }
+    .promise-item:last-child { border-bottom: none; }
+    .promise-icon { color: var(--red); flex-shrink: 0; margin-top: 2px; font-size: 10px; }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1; background: var(--ink);
+      padding: 32px 48px; border-top: 3px solid var(--red);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 10px; }
+    .footer-logo-mark { width: 24px; height: 24px; background: var(--red); display: flex; align-items: center; justify-content: center; }
+    .footer-logo-mark span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 11px; color: white; }
+    .footer-wordmark { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: white; }
+    .footer-copy { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.28); }
+    .footer-email a { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--amber); text-decoration: none; letter-spacing: 0.04em; transition: opacity 0.2s; }
+    .footer-email a:hover { opacity: 0.65; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 90px 20px 64px; }
+      .hero-accent { display: none; }
+      .hero-content { grid-template-columns: 1fr; gap: 36px; }
+      .about { grid-template-columns: 1fr; padding: 56px 20px; gap: 48px; }
+      .participate { grid-template-columns: 1fr; padding: 56px 20px; gap: 48px; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="logo">
+      <div class="logo-mark"><span>T↗</span></div>
+      <span class="logo-text">Theory of Next <em>/ Research</em></span>
+    </a>
+    <a href="mailto:research@theoryofnext.com" class="nav-contact">Contact Us →</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-accent"></div>
+    <div class="hero-content">
+      <div>
+        <div class="eyebrow">Ecosystem Research · India</div>
+        <h1>Which investors<br>do <em>founders</em><br>actually trust?</h1>
+        <p class="hero-desc">Theory of Next studies how India's next generation of founders discover, evaluate, and decide — with findings shared openly across the ecosystem.</p>
+        <a href="#participate" class="btn-red">Participate in Research →</a>
+      </div>
+      <div>
+        <div class="study-card">
+          <div class="card-tag"><span class="tag-dot"></span> Live Now</div>
+          <div class="card-title">India Founder Awareness &amp; Consideration Index</div>
+          <p class="card-desc">Which early-stage VC programs and accelerators are India's founders aware of — and which would they actually consider? Wave 1 baseline, five cities.</p>
+          <div class="card-meta">
+            <div><div class="meta-key">Target</div><div class="meta-val">500 founders</div></div>
+            <div><div class="meta-key">Closes</div><div class="meta-val">June 30, 2025</div></div>
+            <div><div class="meta-key">Cities</div><div class="meta-val">BLR · MUM · DEL</div></div>
+            <div><div class="meta-key">Time</div><div class="meta-val">~2 minutes</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">Founder Awareness Study · Q2 2025</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">India Pre-Seed Funding Landscape</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">Startup Ecosystem Perception Index</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">Open Findings · All Respondents</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">Founder Awareness Study · Q2 2025</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">India Pre-Seed Funding Landscape</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">Startup Ecosystem Perception Index</span><span class="ticker-item sep">◆</span>
+      <span class="ticker-item">Open Findings · All Respondents</span><span class="ticker-item sep">◆</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about reveal">
+    <div>
+      <div class="about-label">Why This Exists</div>
+      <h2 class="about-title">Research designed<br>for the <em>ecosystem</em></h2>
+      <p class="about-body">Most data on India's startup ecosystem is a byproduct of something else — deal flow, signups, press. The questions get shaped by what the publisher wants the answers to say.<br><br>Theory of Next is built around a different standard. Research design is independent of any commercial interest in the findings. Questions are locked before fieldwork begins. Results are shared with participants, not selectively published.</p>
+    </div>
+    <div>
+      <div class="about-item">
+        <div class="about-num">01</div>
+        <div><div class="about-item-title">Questions set independently</div><div class="about-item-body">Design is finalised before fieldwork begins and doesn't change mid-wave.</div></div>
+      </div>
+      <div class="about-item">
+        <div class="about-num">02</div>
+        <div><div class="about-item-title">Findings shared openly</div><div class="about-item-body">All respondents who opt in receive the full results report.</div></div>
+      </div>
+      <div class="about-item">
+        <div class="about-num">03</div>
+        <div><div class="about-item-title">Longitudinal by design</div><div class="about-item-body">Same methodology across waves — so the trend line means something.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTICIPATE -->
+  <section class="participate" id="participate">
+    <div class="reveal">
+      <div class="section-eyebrow">Take Part</div>
+      <h2 class="section-title">Two minutes.<br><em>Real signal.</em></h2>
+      <p class="section-body">If you're building in India at any stage, your perspective is the data. The survey is anonymous. Share your email only if you'd like the findings report.</p>
+      <a href="https://tally.so" target="_blank" class="btn-red">Take the Survey →</a>
+    </div>
+    <ul class="promise-list reveal">
+      <li class="promise-item"><span class="promise-icon">◆</span><span>Anonymous by default — no name or email required to complete.</span></li>
+      <li class="promise-item"><span class="promise-icon">◆</span><span>Five questions. Under two minutes.</span></li>
+      <li class="promise-item"><span class="promise-icon">◆</span><span>Leave your email only if you want the findings report sent to you.</span></li>
+      <li class="promise-item"><span class="promise-icon">◆</span><span>No pitch. No follow-up. This is not a lead form.</span></li>
+    </ul>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <div class="footer-logo-mark"><span>T↗</span></div>
+      <span class="footer-wordmark">Theory of Next</span>
+    </div>
+    <div class="footer-copy">© 2025 Theory of Next · Ecosystem Research</div>
+    <div class="footer-email"><a href="mailto:research@theoryofnext.com">research@theoryofnext.com</a></div>
+  </footer>
+
+  <script>
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').style.boxShadow = window.scrollY > 20 ? '0 2px 20px rgba(0,0,0,0.07)' : 'none';
+    });
+  </script>
+
+</body>
+</html>
